@@ -3,26 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Stream</title>
-    <style>
-        #video {
-            width: 100%;
-            height: auto;
-        }
-    </style>
+    <title>Streaming Video Feed</title>
 </head>
 <body>
-    <h1>Video Stream</h1>
-    <img id="video" src="" alt="Video Stream">
-    <script>
-        // Function to update the video stream
-        function updateVideoStream() {
-            var video = document.getElementById('video');
-            video.src = '/video_feed?' + new Date().getTime(); // Append timestamp to prevent caching
-            setTimeout(updateVideoStream, 1000); // Update every second
-        }
-        // Call the function to start updating the video stream
-        updateVideoStream();
-    </script>
+    <h1>Streaming Video Feed</h1>
+    <img src="http://192.168.0.230:8000/video_feed" alt="Streaming Video Feed">
 </body>
 </html>
