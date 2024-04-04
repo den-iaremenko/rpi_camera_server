@@ -25,19 +25,19 @@ app.add_middleware(
 
 async def video_generator():
     cap = cv2.VideoCapture(0)  # Use 0 for the default camera
+    try:
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+            # Convert frame to JPEG
+            _, buffer = cv2.imencode('.jpg', frame)
 
-        # Convert frame to JPEG
-        _, buffer = cv2.imencode('.jpg', frame)
-
-        # Yield the frame as bytes
-        yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n'
-
-    cap.release()
+            # Yield the frame as bytes
+            yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n'
+    finally:
+        cap.release()
 
 
 def generate_frames():
@@ -54,11 +54,6 @@ def generate_frames():
 @app.get("/video_feed")
 async def video_feed():
     return StreamingResponse(generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame")
-    # return StreamingResponse(video_generator(), media_type="multipart/x-mixed-replace; boundary=frame")
-    # cap = cv2.VideoCapture(0)
-    # ret, frame = cap.read()
-    # ret, buffer = cv2.imencode('.jpg', frame)
-    # return Response(content=buffer.tobytes(), media_type="image/jpeg")
 
 @app.get("/photo")
 async def photo():
