@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 async def video_generator():
-    cap = cv2.VideoCapture(1)  # Use 0 for the default camera
+    cap = cv2.VideoCapture(0)  # Use 0 for the default camera
 
     while cap.isOpened():
         ret, frame = cap.read()
