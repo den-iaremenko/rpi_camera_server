@@ -1,9 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from starlette.responses import StreamingResponse
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from os import path
 import uvicorn
 import cv2
 import io
+
+UPLOAD_FOLDER = "./uploads"
 
 app = FastAPI()
 
@@ -38,6 +42,22 @@ async def video_generator():
 @app.get("/video_feed")
 async def video_feed():
     return StreamingResponse(video_generator(), media_type="multipart/x-mixed-replace; boundary=frame")
+
+@app.get("/photo")
+async def photo():
+    camera_index = 0
+    cam = cv2.VideoCapture(camera_index)
+    while True:
+        _, image = cam.read()
+        break
+    cv2.imwrite('testimage.jpg', image)
+    cam.release()
+    file_path = path.join(UPLOAD_FOLDER, 'testimage.jpg')
+    if path.exists(file_path):
+        return FileResponse(file_path)
+    else:
+        raise HTTPException(status_code=404, detail="File not found")
+
 
 
 @app.get("/")
