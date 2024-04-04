@@ -8,6 +8,7 @@ import cv2
 import io
 
 UPLOAD_FOLDER = "./uploads"
+cap = None
 
 app = FastAPI()
 
@@ -24,6 +25,8 @@ app.add_middleware(
 )
 
 async def video_generator():
+    if cap != None:
+        cap.release()
     cap = cv2.VideoCapture(0)  # Use 0 for the default camera
     try:
         while cap.isOpened():
