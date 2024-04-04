@@ -5,46 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Stream</title>
     <style>
-        #video-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        #video-stream {
+        #video {
             width: 100%;
             height: auto;
-            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <div id="video-container">
-        <img id="video-stream" src="" alt="Video Stream">
-    </div>
-
+    <h1>Video Stream</h1>
+    <img id="video" src="" alt="Video Stream">
     <script>
-        const video = document.getElementById('video-stream');
-
         // Function to update the video stream
-        async function updateVideoStream() {
-            try {
-                const response = await fetch('http://192.168.0.230:8000/video_feed');
-                const reader = response.body.getReader();
-                
-                // Read and display the video stream
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-
-                    const blob = new Blob([value], { type: 'image/jpeg' });
-                    video.src = URL.createObjectURL(blob);
-                }
-            } catch (error) {
-                console.error('Error fetching video stream:', error);
-            }
+        function updateVideoStream() {
+            var video = document.getElementById('video');
+            video.src = '/video_feed?' + new Date().getTime(); // Append timestamp to prevent caching
+            setTimeout(updateVideoStream, 1000); // Update every second
         }
-
-        // Call the function to start streaming the video
+        // Call the function to start updating the video stream
         updateVideoStream();
     </script>
 </body>

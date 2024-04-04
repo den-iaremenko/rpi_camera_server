@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Response
 from starlette.responses import StreamingResponse
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,7 +41,11 @@ async def video_generator():
 
 @app.get("/video_feed")
 async def video_feed():
-    return StreamingResponse(video_generator(), media_type="multipart/x-mixed-replace; boundary=frame")
+    # return StreamingResponse(video_generator(), media_type="multipart/x-mixed-replace; boundary=frame")
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    ret, buffer = cv2.imencode('.jpg', frame)
+    return Response(content=buffer.tobytes(), media_type="image/jpeg")
 
 @app.get("/photo")
 async def photo():
