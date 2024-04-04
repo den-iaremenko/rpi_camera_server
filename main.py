@@ -8,7 +8,7 @@ import io
 app = FastAPI()
 
 origins = [
-    "*:8000"
+    "*"
 ]
 
 app.add_middleware(
