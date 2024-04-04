@@ -1,10 +1,23 @@
 from fastapi import FastAPI
 from starlette.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import cv2
 import io
 
 app = FastAPI()
+
+origins = [
+    "*:8000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 async def video_generator():
     cap = cv2.VideoCapture(1)  # Use 0 for the default camera

@@ -28,7 +28,7 @@
         // Function to update the video stream
         async function updateVideoStream() {
             try {
-                const response = await fetch('http://127.0.0.1:8000/video_feed');
+                const response = await fetch('http://192.168.0.230:8000/video_feed');
                 const reader = response.body.getReader();
                 
                 // Read and display the video stream
