@@ -50,7 +50,7 @@ def photo():
     while True:
         _, image = cam.read()
         break
-    cv2.imwrite('testimage.jpg', image)
+    cv2.imwrite(path.join(UPLOAD_FOLDER, 'testimage.jpg'), image)
     cam.release()
     file_path = path.join(UPLOAD_FOLDER, 'testimage.jpg')
     if path.exists(file_path):
