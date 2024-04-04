@@ -44,7 +44,7 @@ async def video_feed():
     return StreamingResponse(video_generator(), media_type="multipart/x-mixed-replace; boundary=frame")
 
 @app.get("/photo")
-def photo():
+async def photo():
     camera_index = 0
     cam = cv2.VideoCapture(camera_index)
     while True:
