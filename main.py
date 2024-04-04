@@ -50,11 +50,10 @@ def photo():
     while True:
         _, image = cam.read()
         break
-    cv2.imwrite(path.join(UPLOAD_FOLDER, 'testimage.jpg'), image)
+    cv2.imwrite('./uploads/img.jpg', image)
     cam.release()
-    file_path = path.join(UPLOAD_FOLDER, 'testimage.jpg')
-    if path.exists(file_path):
-        return FileResponse(file_path)
+    if path.exists('./uploads/img.jpg'):
+        return FileResponse('./uploads/img.jpg')
     else:
         raise HTTPException(status_code=404, detail="File not found")
 
